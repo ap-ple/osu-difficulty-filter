@@ -1,2 +1,6 @@
-# osu-difficulty-filter
-difficulty filter for beatmaps on the osu! website
+# osu! difficulty filter
+extension link + setup coming soon
+
+roadmap:
+add toggle to hide/blur beatmaps
+add gamemode selector
