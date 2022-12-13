@@ -1,0 +1,9 @@
+p {
+  line-height: 0;
+}
+.difficulty-text {
+  width: 30px;
+}
+.difficulty-input {
+  display: inline-block;
+}
