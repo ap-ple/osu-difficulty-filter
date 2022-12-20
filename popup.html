@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>osu! difficulty filter</title>
+    <link rel="stylesheet" type="text/css" href="popup.css">
+  </head>
+  <body>
+    <h3 style="margin-bottom: 8px;">osu! difficulty filter</h3>
+    <div id="min" class="difficulty-input">
+      <label class="selector-label">min</label>
+      <input id="min-text" class="difficulty-text">
+      <input id="min-slider" class="difficulty-slider" type="range" min="0" max="10" step="0.01">
+    </div>
+
+    <div id="max" class="difficulty-input">
+      <label class="selector-label">max</label>
+      <input id="max-text" class="difficulty-text">
+      <input id="max-slider" class="difficulty-slider" type="range" min="0" max="10" step="0.01">
+    </div>
+
+    <button id="filter" class="filterButton">apply</button>
+    
+    <script src="jquery-3.6.2.min.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+  </body>
+</html>

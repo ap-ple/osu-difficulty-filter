@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+
+  "name": "osu! difficulty filter",
+  "version": "0.1.0",
+  "description": "filters osu! beatmaps by star difficulty",
+
+  "permissions": ["activeTab", "scripting", "storage"],
+
+  "options_ui": {"page": "options.html"},
+
+  "action": {
+    "default_icon": {
+      "16": "assets/ext-icon.png",
+      "24": "assets/ext-icon.png",
+      "32": "assets/ext-icon.png"
+    },
+    "default_title": "osu! difficulty filter",
+    "default_popup": "popup.html"
+  }
+}

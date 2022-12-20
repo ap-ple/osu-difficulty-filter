@@ -1,0 +1,33 @@
+.difficulty-input {
+  display: inline-block;
+}
+.difficulty-text {
+  width: 28px;
+  float: right;
+  margin-right: 5px;
+}
+.selector-label {
+  font-size: 14px;
+}
+.filterButton {
+  border: none;
+  background: rgb(239, 109, 168);
+  text-align: center;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  width: 117px;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 8px;
+  font-weight: bold;
+  box-shadow: 0 5px 0 grey;
+}
+.filterButton:hover {
+  background: rgb(237, 93, 159);
+}
+.filterButton:active {
+  box-shadow: 0 3px 0 grey;
+  transform: translateY(2px);
+}
