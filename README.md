@@ -1,5 +1,5 @@
 # osu! difficulty filter
-https://chrome.google.com/webstore/detail/osu-difficulty-filter/bbckmnofmlhalfimlpbpnflbccakkndc
+https://chrome.google.com/webstore/detail/osu-difficulty-filter/bbckmnofmlhalfimlpbpnflbccakkndc <br />
 setup instructions coming soon™
 
 roadmap:
