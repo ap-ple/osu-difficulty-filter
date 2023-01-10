@@ -51,7 +51,7 @@ $('#filter').click(function() {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
     chrome.scripting.executeScript({
       target: {tabId: tabs[0].id},
-      files: ['jquery-3.6.2.min.js', 'content.js']
-    })
+      files: ['bottleneck.js', 'jquery-3.6.2.min.js', 'content.js']
+    });
   });
 });

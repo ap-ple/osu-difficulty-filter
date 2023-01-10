@@ -5,6 +5,12 @@ if ($('.beatmapset-panel').length === 0) {
   throw new Error('Invalid page');
 }
 
+// if beatmap listing, alert the user and throw error
+if ($('.beatmapsets__item').length > 0) { 
+  alert('Filter not recommended for use on beatmap listing. Instead, use stars>/<(=), or visit a userpage.')
+  throw new Error('Filter not recommended for use on beatmap listing');
+}
+
 //get values
 var min;
 var max;
@@ -13,24 +19,10 @@ if (beatmapCache == null) {
   var beatmapCache = {};
 }
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
-async function getBeatmapSet(apiKey, beatmapSetId){
-  sleep(80); // not good implementation but I was desperate
-  return fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&s=${beatmapSetId}`)
-    .then((response) => response.json())
-    .then((data) => {return data});
-}
-
-async function getDiffs(apiKey, beatmapSetId){
-  const data = await getBeatmapSet(apiKey, beatmapSetId);
-  return data.map(a => a.difficultyrating);
+if (limiter == null) {
+  var limiter = new Bottleneck({
+    maxConcurrent: 20
+  });
 }
 
 function checkDiffs(beatmapSetId, min, max) {
@@ -66,18 +58,8 @@ chrome.storage.sync.get({'min': 0, 'max': 10, 'apiKey': ''}).then((result) => {
       }
     });
 
-  // determine which class name to use
-  var beatmapClassName;
-  if ($('.beatmapsets__item').length > 0) { 
-    beatmapClassName = '.beatmapsets__item'// /beatmaps
-    alert('Warning: filter not recommended for use on beatmap listing. Instead, use stars>/<(=)n')
-  } else { 
-    beatmapClassName = '.osu-layout__col'  // /users
-  }
-
-  // find all beatmaps on page
   console.log('Hiding beatmaps outside of range...');
-  $(beatmapClassName).each(function(key, element) {
+  $('.osu-layout__col').each(function(key, element) {
     if ($(this).children().first().attr('type') === 'button'){
       return; // skip show more button
     }
@@ -93,7 +75,10 @@ chrome.storage.sync.get({'min': 0, 'max': 10, 'apiKey': ''}).then((result) => {
         $(this).hide(500);
       }
     } else {
-      getDiffs(apiKey, beatmapSetId).then((diffs) => {
+      limiter.schedule(() => fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&s=${beatmapSetId}`)
+      .then((response) => {return response.json()})
+      .then((data) => {return data.map(diff => diff.difficultyrating)})
+      .then((diffs) => {
         beatmapCache[beatmapSetId] = diffs
         let found = checkDiffs(beatmapSetId, min, max);
         if (found){
@@ -101,8 +86,7 @@ chrome.storage.sync.get({'min': 0, 'max': 10, 'apiKey': ''}).then((result) => {
         } else {
           $(this).hide(500);
         }
-      });
+      }))
     }
   });
 });
-
