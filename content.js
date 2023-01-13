@@ -25,14 +25,17 @@ if (limiter == null) {
   });
 }
 
-function checkDiffs(beatmapSetId, min, max) {
-  var found = false;
+function filterBeatmapset(beatmapSetId, min, max, beatmapCard) {
+  let found = false;
   beatmapCache[beatmapSetId].forEach(diff => {
     if (diff >= min && diff <= max){
+      $(beatmapCard).show(500);
       found = true;
     }
   });
-  return found;
+  if (!found) {
+    $(beatmapCard).hide(500);
+  }
 }
 
 chrome.storage.sync.get({'min': 0, 'max': 10, 'apiKey': ''}).then((result) => {
@@ -60,32 +63,22 @@ chrome.storage.sync.get({'min': 0, 'max': 10, 'apiKey': ''}).then((result) => {
 
   console.log('Hiding beatmaps outside of range...');
   $('.osu-layout__col').each(function(key, element) {
-    if ($(this).children().first().attr('type') === 'button'){
-      return; // skip show more button
+    if ($(this).is(':empty') || $(this).children().first().attr('type') === 'button'){
+      return; // not beatmap card 
     }
 
     const audioUrl = $(this).children('.beatmapset-panel').first().attr('data-audio-url')
     const beatmapSetId = audioUrl.match(/\/(\d+)+[\/]?/g)[0].replace(/\//g, '')
 
     if (beatmapSetId in beatmapCache) {
-      let found = checkDiffs(beatmapSetId, min, max);
-      if (found){
-        $(this).show(500);
-      } else {
-        $(this).hide(500);
-      }
+      filterBeatmapset(beatmapSetId, min, max, this);
     } else {
       limiter.schedule(() => fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&s=${beatmapSetId}`)
       .then((response) => {return response.json()})
       .then((data) => {return data.map(diff => diff.difficultyrating)})
       .then((diffs) => {
         beatmapCache[beatmapSetId] = diffs
-        let found = checkDiffs(beatmapSetId, min, max);
-        if (found){
-          $(this).show(500);
-        } else {
-          $(this).hide(500);
-        }
+        filterBeatmapset(beatmapSetId, min, max, this);
       }))
     }
   });

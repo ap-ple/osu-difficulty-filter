@@ -2,7 +2,7 @@
   "manifest_version": 3,
 
   "name": "osu! difficulty filter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "filters osu! beatmaps by star difficulty",
 
   "permissions": ["activeTab", "scripting", "storage"],
